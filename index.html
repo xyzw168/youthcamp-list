@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packing Checklist Youth Camp 2026</title>
+    <!-- Tailwind CSS untuk Styling Cepat & Modern -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom style untuk coretan saat selesai */
+        .checked-text {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen pb-12">
+
+    <!-- Header & Progress Tracker -->
+    <div class="sticky top-0 bg-white shadow-md z-50 px-4 py-4 mb-6">
+        <div class="max-w-xl mx-auto">
+            <h1 class="text-xl font-bold text-emerald-700 text-center">🌿 RYCAM Youth Camp 2026</h1>
+            <p class="text-xs text-gray-500 text-center mb-3">Master Packing Checklist - Widiya Astuti</p>
+            
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
+                <div id="progress-bar" class="bg-emerald-500 h-4 transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between text-xs font-semibold mt-1 text-gray-600">
+                <span id="progress-text">Progress: 0%</span>
+                <span id="items-count">0 / 0 Barang</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Konten Utama List -->
+    <main class="max-w-xl mx-auto px-4 space-y-6">
+
+        <!-- KATEGORI 1: RANSEL -->
+        <section class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+            <div class="flex items-center space-x-2 mb-4 border-b pb-2">
+                <span class="text-2xl">🎒</span>
+                <div>
+                    <h2 class="font-bold text-gray-800 text-lg">Tas Ransel / Daypack</h2>
+                    <p class="text-xs text-gray-500">Dibawa selama perjalanan (Kereta, Bus, Pesawat)</p>
+                </div>
+            </div>
+            <ul class="space-y-3" id="list-ransel">
+                <!-- Diisi otomatis oleh JavaScript -->
+            </ul>
+        </section>
+
+        <!-- KATEGORI 2: KOPER -->
+        <section class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+            <div class="flex items-center space-x-2 mb-4 border-b pb-2">
+                <span class="text-2xl">🧳</span>
+                <div>
+                    <h2 class="font-bold text-gray-800 text-lg">Koper / Bagasi Besar</h2>
+                    <p class="text-xs text-gray-500">Ditata rapi dengan teknik gulung (rolling)</p>
+                </div>
+            </div>
+            <ul class="space-y-3" id="list-koper">
+                <!-- Diisi otomatis oleh JavaScript -->
+            </ul>
+        </section>
+
+        <!-- PENGINGAT / GOLDEN RULES -->
+        <section class="bg-amber-50 p-5 rounded-2xl border border-amber-200">
+            <h3 class="font-bold text-amber-800 flex items-center mb-2 text-sm">
+                <span class="mr-2">🔔</span> Golden Rules Sebelum Berangkat
+            </h3>
+            <ul class="text-xs text-amber-900 space-y-1.5 list-disc list-inside">
+                <li>Pastikan semua gadget dan powerbank terisi penuh 100%.</li>
+                <li>Simpan semua kabel dalam satu pouch kecil di ransel agar tidak berantakan.</li>
+                <li>Beri kabar ke orang tua saat berangkat, tiba di Bali, dan sebelum pulang.</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- JavaScript untuk Logika Interaktif & LocalStorage -->
+    <script>
+        // Data master final list barang bawaan
+        const dataBarang = [
+            // Tas Ransel
+            { id: 1, nama: "Smartphone (E-ticket offline & foto dokumen)", tempat: "ransel", ket: "Garuda Indonesia ticket & foto KTP/BPJS" },
+            { id: 2, nama: "Kartu Identitas Asli (KTP/Kartu Pelajar/KK)", tempat: "ransel", ket: "Siapkan fisik minimal H-1" },
+            { id: 3, nama: "Kartu BPJS / Asuransi Kesehatan", tempat: "ransel", ket: "Untuk proteksi medis cadangan" },
+            { id: 4, nama: "Dompet & Uang Tunai Secukupnya", tempat: "ransel", ket: "Untuk jajan darurat di rest area/stasiun" },
+            { id: 5, nama: "Boarding Pass Fisik", tempat: "ransel", ket: "Simpan setelah check-in untuk reimbursement" },
+            { id: 6, nama: "Kuitansi Biaya Perjalanan Lokal", tempat: "ransel", ket: "Bukti fisik transportasi dari rumah ke titik kumpul" },
+            { id: 7, nama: "Charger HP & Kabel Charger", tempat: "ransel", ket: "Wajib di ransel untuk isi daya di colokan kereta malam" },
+            { id: 8, nama: "Power Bank", tempat: "ransel", ket: "Pastikan terisi penuh 100% dari rumah" },
+            { id: 9, nama: "Earphone / TWS", tempat: "ransel", ket: "Hiburan perjalanan jauh" },
+            { id: 10, nama: "Sunscreen", tempat: "ransel", ket: "Wajib untuk aktivitas luar ruangan siang hari" },
+            { id: 11, nama: "Lip Balm", tempat: "ransel", ket: "Mencegah bibir pecah di suhu dingin Bedugul" },
+            { id: 12, nama: "Obat-obatan Pribadi & Vitamin", tempat: "ransel", ket: "Obat maag, asma, atau kebutuhan harian" },
+            { id: 13, nama: "Obat Anti-mabuk & Minyak Angin", tempat: "ransel", ket: "Sangat krusial untuk rute darat berliku" },
+            { id: 14, nama: "Tisu Basah & Tisu Kering", tempat: "ransel", ket: "Sanitasi cepat selama perjalanan" },
+            { id: 15, nama: "Hand Sanitizer & Masker Cadangan", tempat: "ransel", ket: "Menjaga higienitas" },
+            { id: 16, nama: "Plastik Sampah Kecil", tempat: "ransel", ket: "Kantong sampah pribadi di bus/kereta" },
+            { id: 17, nama: "Tumbler / Botol Minum Isi Ulang", tempat: "ransel", ket: "Untuk isi ulang di pos water station perkemahan" },
+            { id: 18, nama: "Snack Ringan", tempat: "ransel", ket: "Ganjal lapar sebelum jadwal makan utama" },
+            { id: 19, nama: "Pakaian Berangkat (di badan)", tempat: "ransel", ket: "Kaos bebas sopan, celana panjang, jaket, kaos kaki, sepatu" },
+
+            // Koper
+            { id: 20, nama: "4 Lembar Kaos Bebas Sopan", tempat: "koper", ket: "Nyaman, sopan, berlengan" },
+            { id: 21, nama: "1 Lembar Atasan Batik Sekolah", tempat: "koper", ket: "Seragam SMAN 1 Pangandaran untuk Hari ke-3" },
+            { id: 22, nama: "1 Lembar Manset / Cardigan", tempat: "koper", ket: "Paduan luaran kaos lengan pendek panitia di Hari ke-2" },
+            { id: 23, nama: "3 Lembar Celana Panjang / Olahraga", tempat: "koper", ket: "Bahan fleksibel untuk aktivitas luar ruangan" },
+            { id: 24, nama: "1 Lembar Jaket Tebal Tambahan", tempat: "koper", ket: "Menghalau dingin malam Bedugul (15-18°C)" },
+            { id: 25, nama: "2 Stel Pakaian Tidur Hangat", tempat: "koper", ket: "Tetap sopan dan menjaga tubuh tetap hangat" },
+            { id: 26, nama: "6-7 Set Pakaian Dalam", tempat: "koper", ket: "Bawa jumlah aman untuk durasi 6 hari" },
+            { id: 27, nama: "5 Pasang Kaus Kaki", tempat: "koper", ket: "Disimpan rapi di dalam sela koper" },
+            { id: 28, nama: "1 Buah Topi", tempat: "koper", ket: "Pelindung terik matahari siang" },
+            { id: 29, nama: "1 Pasang Sandal", tempat: "koper", ket: "Hanya untuk santai di sekitar area tenda perkemahan" },
+            { id: 30, nama: "Sleeping Bag / Selimut Tebal", tempat: "koper", ket: "Pilih salah satu saja agar hemat ruang koper" },
+            { id: 31, nama: "1 Buah Sarung", tempat: "koper", ket: "Opsional dan multifungsi" },
+            { id: 32, nama: "Handuk Ukuran Sedang", tempat: "koper", ket: "Pilih yang berbahan microfiber agar cepat kering" },
+            { id: 33, nama: "Paket Alat Mandi & Deodoran", tempat: "koper", ket: "Sabun, sampo, sikat gigi, pasta gigi, sisir" },
+            { id: 34, nama: "Skincare Harian", tempat: "koper", ket: "Skincare esensial malam/pagi" },
+            { id: 35, nama: "Losion Anti-Nyamuk & Plester Luka", tempat: "koper", ket: "Proteksi wajib di lingkungan perkemahan" },
+            { id: 36, nama: "Laundry Bag / Plastik Baju Kotor", tempat: "koper", ket: "Memisahkan pakaian bersih dan kotor" },
+            { id: 37, nama: "Plastik Ziplock", tempat: "koper", ket: "Mengamankan berkas cadangan/gawai dari basah" },
+            { id: 38, nama: "Buku Catatan Kecil & Pulpen", tempat: "koper", ket: "Mencatat esensi materi saat sesi workshop" },
+            { id: 39, nama: "Colokan Cabang / T-Colokan", tempat: "koper", ket: "Sangat penting untuk berbagi daya di tenda" },
+            { id: 40, nama: "Eco-Bag / Reusable Bag", tempat: "koper", ket: "Wajib bawa, regulasi Bali melarang kantong plastik" },
+            { id: 41, nama: "Payung Lipat / Jas Hujan Plastik", tempat: "koper", ket: "Antisipasi ketidakpastian cuaca di alam" },
+            { id: 42, nama: "Gantungan Baju Lipat", tempat: "koper", ket: "1-2 buah (opsional)" }
+        ];
+
+        // Memuat status cetak dari LocalStorage
+        let checkedStatus = JSON.parse(localStorage.getItem('youthCampChecklist')) || {};
+
+        const listRansel = document.getElementById('list-ransel');
+        const listKoper = document.getElementById('list-koper');
+
+        // Fungsi me-render list ke HTML
+        function renderList() {
+            listRansel.innerHTML = '';
+            listKoper.innerHTML = '';
+
+            dataBarang.forEach(barang => {
+                const isChecked = checkedStatus[barang.id] ? 'checked' : '';
+                const textClass = checkedStatus[barang.id] ? 'checked-text' : '';
+                
+                const li = document.createElement('li');
+                li.className = "flex items-start space-x-3 py-1.5 border-b border-gray-50 last:border-none";
+                li.innerHTML = `
+                    <input type="checkbox" id="item-${barang.id}" ${isChecked} 
+                           class="mt-1 h-4 w-4 rounded text-emerald-600 focus:ring-emerald-500 border-gray-300"
+                           onchange="toggleItem(${barang.id})">
+                    <label enfrent="item-${barang.id}" class="text-sm select-none cursor-pointer flex-1">
+                        <span class="font-medium text-gray-800 ${textClass}">${barang.nama}</span>
+                        <p class="text-xs text-gray-400 mt-0.5">${barang.ket}</p>
+                    </label>
+                `;
+
+                if (barang.tempat === 'ransel') {
+                    listRansel.appendChild(li);
+                } else {
+                    listKoper.appendChild(li);
+                }
+            });
+            updateProgress();
+        }
+
+        // Fungsi mengubah status barang (Centang / Belum)
+        window.toggleItem = function(id) {
+            checkedStatus[id] = !checkedStatus[id];
+            localStorage.setItem('youthCampChecklist', JSON.stringify(checkedStatus));
+            
+            // Beri efek coret secara dinamis tanpa render ulang penuh
+            const labelSpan = document.querySelector(`#item-${id} ~ label span`);
+            if (checkedStatus[id]) {
+                labelSpan.classList.add('checked-text');
+            } else {
+                labelSpan.classList.remove('checked-text');
+            }
+            updateProgress();
+        }
+
+        // Fungsi menghitung & memperbarui Progress Bar
+        function updateProgress() {
+            const totalItems = dataBarang.length;
+            const checkedCount = Object.values(checkedStatus).filter(Boolean).length;
+            const percentage = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0;
+
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+            document.getElementById('progress-text').innerText = `Progress: ${percentage}%`;
+            document.getElementById('items-count').innerText = `${checkedCount} / ${totalItems} Barang`;
+        }
+
+        // Jalankan render saat halaman pertama kali dibuka
+        renderList();
+    </script>
+</body>
+</html>
